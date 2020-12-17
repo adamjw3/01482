@@ -24,6 +24,9 @@ const IndexPage = () => {
         <div className="items">
           <p>Reach out if you would like to collaborate:<br /> <a href="mailto:craig@01482.xyz">craig@01482.xyz </a></p>
         </div>
+        <div className="items">
+
+        </div>
       </Container>
     </Layout >
   );
