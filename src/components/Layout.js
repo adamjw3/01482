@@ -17,7 +17,7 @@ const Layout = ( { children, pageName } ) => {
       <Helmet bodyAttributes={{ class: className }}>
         <title>Gatsby Site</title>
       </Helmet>
-      <div className="wrapper">
+      <div>
         <main>{children}</main>
       </div>
     </>
