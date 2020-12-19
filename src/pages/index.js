@@ -15,7 +15,7 @@ const IndexPage = () => {
       <Container>
         <div className="items">
           <p>01482 is a digital design practice with over 15 years experience partering with brands,
-        individuals and studio’s. Founded by Graphic Designer <a href="">Craig Jackson</a>
+        individuals and studio’s. Founded by Graphic Designer <a href="http://www.craigjackson.io/" target="_blank">Craig Jackson</a>
           </p>
         </div>
         <div className="items">
