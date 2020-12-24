@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <ul style="position: absolute; top: 10px; left: 10px;">
+      <li data-vid="http://media.w3.org/2010/05/sintel/trailer.ogv">proejct 1</li>
+      <li data-vid="http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv">proejct 2</li>
+  </ul>
+  <video id="video" loop muted autoplay style="visibility: hidden; position: absolute;" ></video>
+  <canvas id="canvas"></canvas>
+</body>
+<script>
+    const canvas = document.querySelector("canvas");
+
+    canvas.width = window.innerWidth * 2;
+    canvas.height = window.innerHeight * 2;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    const ctx = canvas.getContext("2d");
+    const video = document.querySelector("video");
+    let requestID;
+
+    document.addEventListener("click", (event) => {
+        if(event.target.dataset.vid) {
+            video.src = event.target.dataset.vid;
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        }
+    })
+
+    document.addEventListener('mousemove', (event) => {
+        cancelAnimationFrame(requestID)
+        function step() {
+            requestID = requestAnimationFrame(step)
+            ctx.drawImage(video, event.pageX - 330, event.pageY - 180, 660, 360)
+        }
+      requestID = requestAnimationFrame(step)
+    })
+
+</script>
+</html>
