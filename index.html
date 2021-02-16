@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="margin: 0; padding: 0">
   <ul style="position: absolute; top: 10px; left: 10px;">
-      <li data-vid="http://media.w3.org/2010/05/sintel/trailer.ogv">proejct 1</li>
+      <li data-vid="http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv">proejct 1</li>
       <li data-vid="http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv">proejct 2</li>
   </ul>
   <video id="video" loop muted autoplay style="visibility: hidden; position: absolute;" ></video>
@@ -16,32 +16,88 @@
 <script>
     const canvas = document.querySelector("canvas");
 
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
 
     const ctx = canvas.getContext("2d");
-    ctx.scale(2, 2);
     const video = document.querySelector("video");
     let requestID;
+    let clear = false;
+    let videoObject = {};
+    var coord;
+    let aimX = null
+    let aimY = null
+    let currentX = null
+    let currentY = null
 
     document.addEventListener("click", (event) => {
         if(event.target.dataset.vid) {
             video.src = event.target.dataset.vid;
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            aimX = null
+            aimY = null
+            currentX = null
+            currentY = null
+            clear = true;
         }
-    })
+    });
+    
+    video.addEventListener('play', function() {
+        var xOffset = (canvas.width  - video.videoWidth ) * 0.5;
+        var yOffset  = (canvas.height - video.videoHeight) * 0.5;
 
-    document.addEventListener('mousemove', (event) => {
-        cancelAnimationFrame(requestID)
-        function step() {
-            requestID = requestAnimationFrame(step)
-            ctx.drawImage(video, event.pageX - 330, event.pageY - 180, 660, 360)
+        ctx.drawImage(video, xOffset, yOffset, video.videoWidth , video.videoHeight)
+
+        videoObject = {
+            x: xOffset,
+            y: yOffset,
+            width: video.videoWidth,
+            height: video.videoWidth
         }
-      requestID = requestAnimationFrame(step)
-    })
+     }); 
+
+    const movement = function (event) {
+        if(Object.keys(videoObject).length !== 0) {
+            aimX = event.pageX
+            aimY = event.pageY
+            if ((currentX === null) && (videoObject.x < aimX && videoObject.x > aimX - (videoObject.width / 2) && videoObject.y < aimY && videoObject.y > aimY -  (videoObject.height / 2))) {
+                currentX = event.pageX
+                currentY = event.pageY
+            }
+        }
+    };
+
+    window.addEventListener('mousemove', movement, false);
+    window.addEventListener('touchmove', movement, false);  
+
+    const draw = function () {
+       if (currentX) {
+            if(clear) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.drawImage(video, currentX - (videoObject.width / 2), currentY - (videoObject.height / 2), video.videoWidth , video.videoHeight)
+                
+                currentX = currentX + (aimX - currentX);
+                
+                currentY = currentY + (aimY - currentY);
+                clear = false;
+            } else {
+                ctx.drawImage(video, currentX - (videoObject.width / 2), currentY - (videoObject.height / 2), video.videoWidth , video.videoHeight)
+        
+                currentX = currentX + (aimX - currentX) * 0.1
+                currentY = currentY + (aimY - currentY) * 0.1
+            }
+            
+           
+        }
+  
+        requestAnimationFrame(draw)
+    }
+
+    draw();
+
 
 </script>
 </html>
