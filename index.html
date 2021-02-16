@@ -7,8 +7,10 @@
 </head>
 <body style="margin: 0; padding: 0">
   <ul style="position: absolute; top: 10px; left: 10px;">
-      <li data-vid="https://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv">proejct 1</li>
-      <li data-vid="https://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv">proejct 2</li>
+      <li data-vid="./assets/videos/face37.mp4">face37</li>
+      <li data-vid="./assets/videos/Anagram.mp4">Anagram</li>
+      <li data-vid="./assets/videos/Jess_Kohl.mp4">Jess Kohl</li>
+      <li data-vid="./assets/videos/Wolff_Olins.mp4">Wolff Olins</li>
   </ul>
   <video id="video" loop muted autoplay style="visibility: hidden; position: absolute;" ></video>
   <canvas id="canvas"></canvas>
@@ -46,24 +48,28 @@
     });
     
     video.addEventListener('play', function() {
-        var xOffset = (canvas.width  - video.videoWidth ) * 0.5;
-        var yOffset  = (canvas.height - video.videoHeight) * 0.5;
+        var xOffset = (canvas.width  - 600 ) * 0.5;
+        var yOffset  = (canvas.height - 340) * 0.5;
 
-        ctx.drawImage(video, xOffset, yOffset, video.videoWidth , video.videoHeight)
-
-        videoObject = {
-            x: xOffset,
-            y: yOffset,
-            width: video.videoWidth,
-            height: video.videoWidth
+         videoObject = {
+            xOffset: xOffset,
+            yOffset: yOffset,
+            videoWidth: 600,
+            videoHeight: 340
         }
+
+        console.log("vidoe", videoObject.videoWidth)
+
+        ctx.drawImage(video, videoObject.xOffset, videoObject.yOffset, videoObject.videoWidth , videoObject.videoHeight)
+
+       
      }); 
 
     const movement = function (event) {
         if(Object.keys(videoObject).length !== 0) {
             aimX = event.pageX
             aimY = event.pageY
-            if ((currentX === null) && (videoObject.x < aimX && videoObject.x > aimX - (videoObject.width / 2) && videoObject.y < aimY && videoObject.y > aimY -  (videoObject.height / 2))) {
+            if ((currentX === null) && (videoObject.xOffset < aimX && videoObject.xOffset > aimX - (videoObject.videoWidth / 2) && videoObject.yOffset < aimY && videoObject.yOffset > aimY -  (videoObject.videoHeight / 2))) {
                 currentX = event.pageX
                 currentY = event.pageY
             }
@@ -77,17 +83,17 @@
        if (currentX) {
             if(clear) {
                 ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                ctx.drawImage(video, currentX - (videoObject.width / 2), currentY - (videoObject.height / 2), video.videoWidth , video.videoHeight)
+                ctx.drawImage(video, currentX - (videoObject.videoHeight / 2), currentY - (videoObject.videoHeight / 2), videoObject.videoWidth , videoObject.videoHeight)
                 
                 currentX = currentX + (aimX - currentX);
                 currentY = currentY + (aimY - currentY);
                 
                 clear = false;
             } else {
-                ctx.drawImage(video, currentX - (videoObject.width / 2), currentY - (videoObject.height / 2), video.videoWidth , video.videoHeight)
+                ctx.drawImage(video, currentX - (videoObject.videoHeight / 2), currentY - (videoObject.videoHeight / 2), videoObject.videoWidth , videoObject.videoHeight)
         
-                currentX = currentX + (aimX - currentX) * 0.1
-                currentY = currentY + (aimY - currentY) * 0.1
+                currentX = currentX + (aimX - currentX) * 0.2
+                currentY = currentY + (aimY - currentY) * 0.2
             }
             
            
