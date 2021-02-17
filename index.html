@@ -44,6 +44,7 @@
             currentX = null
             currentY = null
             clear = true;
+            video.play();
         }
     });
     
@@ -58,11 +59,7 @@
             videoHeight: 340
         }
 
-        console.log("vidoe", videoObject.videoWidth)
-
         ctx.drawImage(video, videoObject.xOffset, videoObject.yOffset, videoObject.videoWidth , videoObject.videoHeight)
-
-       
      }); 
 
     const movement = function (event) {
@@ -98,7 +95,6 @@
         } else {
             ctx.drawImage(video, videoObject.xOffset, videoObject.yOffset, videoObject.videoWidth , videoObject.videoHeight)
         }
-  
         requestAnimationFrame(draw)
     }
 
