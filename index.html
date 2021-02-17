@@ -94,9 +94,9 @@
         
                 currentX = currentX + (aimX - currentX) * 0.2
                 currentY = currentY + (aimY - currentY) * 0.2
-            }
-            
-           
+            } 
+        } else {
+            ctx.drawImage(video, videoObject.xOffset, videoObject.yOffset, videoObject.videoWidth , videoObject.videoHeight)
         }
   
         requestAnimationFrame(draw)
